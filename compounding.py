@@ -4,12 +4,23 @@ import time
 from tabulate import tabulate
 
 ticker = int(time.time())
-
+print(ticker)
 #lbank stuff
 lbank_pricing = requests.get("https://www.lbank.info/request/tick?symbol=usd&t=" + str(ticker))
 lbank_pricing_dict = json.loads(lbank_pricing.text)
-xcc_price = float(lbank_pricing_dict["data"][180]["c"]["price"])
-xch_price = float(lbank_pricing_dict["data"][108]["c"]["price"])
+
+for coin in lbank_pricing_dict["data"]:
+    #print(coin["symbol"])
+    if "xcc" in coin["symbol"]:
+        print(coin["c"]["usd"])
+        xcc_price = float(coin["c"]["usd"])
+    if "xch" in coin["symbol"]:
+        print(coin["c"]["usd"])
+        xch_price = float(coin["c"]["usd"])
+
+
+#xcc_price = float(lbank_pricing_dict["data"][179]["c"]["price"])
+#xch_price = float(lbank_pricing_dict["data"][104]["c"]["price"])
 
 #foxypool stuff
 
@@ -30,9 +41,9 @@ watt_tib = 0.772
 usd_watt_tib_month = float((watt_tib/1000) * 0.1 * 24 * 30)
 
 #1 = 100% chia, 0 = 100% chives
-chia_chives_split = 0.5
+chia_chives_split = 0.00
 
-stats_dict = {"XCC Price": ["$" + str(xcc_price)], "XCH Price": [xch_price], "Chives USD/TiB/Month": [xcc_profit_per_tib_per_month * xcc_price], "Chia USD/TiB/Month": [xch_profit_per_tib_per_month * xch_price], "Per TiB Cost": [tib_price], "Chia/Chives Split": [0.5]}
+stats_dict = {"XCC Price": ["$" + str(xcc_price)], "XCH Price": ["$" + str(xch_price)], "Chives USD/TiB/Month": ["$" + str(xcc_profit_per_tib_per_month * xcc_price)], "Chia USD/TiB/Month": ["$" + str(xch_profit_per_tib_per_month * xch_price)], "Per TiB Cost": ["$" + str(tib_price)], "Chia/Chives Split": ["$" + str(chia_chives_split)]}
 
 compound_dict = {"Month": list(range(0,49)), "Chia TB": [], "Chives TB": [], "Chia TB Increase": [], "Chives TB Increase": [], "XCH Rev": [], "XCC Rev": [], "Chia USD Rev": [], "Chives USD Rev": [], "Total USD Rev": [], "Total USD Profit": [], "Estimated Watts": [], "Electric Costs": []}
 
