@@ -3,24 +3,16 @@ import json
 import time
 from tabulate import tabulate
 
-ticker = int(time.time())
-print(ticker)
 #lbank stuff
-lbank_pricing = requests.get("https://www.lbank.info/request/tick?symbol=usd&t=" + str(ticker))
-lbank_pricing_dict = json.loads(lbank_pricing.text)
+lbank_xcc_url = requests.get("https://api.lbkex.com/v1/ticker.do?symbol=xcc_usdt")
+lbank_xcc_dict = json.loads(lbank_xcc_url.text)
+print(lbank_xcc_dict["ticker"]["latest"])
+xcc_price = lbank_xcc_dict["ticker"]["latest"]
 
-for coin in lbank_pricing_dict["data"]:
-    #print(coin["symbol"])
-    if "xcc" in coin["symbol"]:
-        print(coin["c"]["usd"])
-        xcc_price = float(coin["c"]["usd"])
-    if "xch" in coin["symbol"]:
-        print(coin["c"]["usd"])
-        xch_price = float(coin["c"]["usd"])
-
-
-#xcc_price = float(lbank_pricing_dict["data"][179]["c"]["price"])
-#xch_price = float(lbank_pricing_dict["data"][104]["c"]["price"])
+lbank_xch_url = requests.get("https://api.lbkex.com/v1/ticker.do?symbol=xch_usdt")
+lbank_xch_dict = json.loads(lbank_xch_url.text)
+print(lbank_xch_dict["ticker"]["latest"])
+xch_price = lbank_xch_dict["ticker"]["latest"]
 
 #foxypool stuff
 
